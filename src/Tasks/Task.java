@@ -1,3 +1,7 @@
+package tasks;
+
+import status.Status;
+
 import java.util.Objects;
 
 public class Task {
@@ -6,10 +10,10 @@ public class Task {
     private String name;
     private Status status;
 
-    public Task(String description, String name, Status status) {
+    public Task(String description, String name) {
         this.description = description;
         this.name = name;
-        this.status = status;
+        status = Status.NEW;
     }
 
     public String getDescription() {

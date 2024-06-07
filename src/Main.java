@@ -24,17 +24,17 @@ public class Main {
         taskManager.createSubtask(new Subtask("Пропылесосить салон", "Чистка", 5));
         taskManager.createSubtask(new Subtask("Съездить на мойку", "Чистка", 5));
         System.out.println("Вывод на экран задач");
-        for (Task task : taskManager.printAllTask()) { // добавил вывод через for, что бы было не всё в 1 куче
+        for (Task task : taskManager.getAllTask()) { // добавил вывод через for, что бы было не всё в 1 куче
             System.out.println(task);
         }
 
         System.out.println("\nВывод на экран эпиков");
-        for (Epic epic : taskManager.printAllEpic()) {
+        for (Epic epic : taskManager.getAllEpic()) {
             System.out.println(epic);
         }
 
         System.out.println("\nВывод на экран подзадачи");
-        for (Subtask subtask : taskManager.printAllSubtask()) {
+        for (Subtask subtask : taskManager.getAllSubtask()) {
             System.out.println(subtask);
         }
 
@@ -43,7 +43,7 @@ public class Main {
         task1.setId(2);
         task1.setStatus(Status.IN_PROGRESS);
         taskManager.updateTask(task1);
-        for (Task task : taskManager.printAllTask()) {
+        for (Task task : taskManager.getAllTask()) {
             System.out.println(task);
         }
 
@@ -52,12 +52,12 @@ public class Main {
         subtask.setStatus(Status.IN_PROGRESS);
         subtask.setId(8);
         taskManager.updateSubtask(subtask);
-        for (Subtask subtask1 : taskManager.printAllSubtask()) {
+        for (Subtask subtask1 : taskManager.getAllSubtask()) {
             System.out.println(subtask1);
         }
 
         System.out.println("\nПроверка обновился ли эпик");
-        for (Epic epic : taskManager.printAllEpic()) {
+        for (Epic epic : taskManager.getAllEpic()) {
             System.out.println(epic);
         }
 
@@ -81,34 +81,34 @@ public class Main {
 
         System.out.println("\nУдаление задачи по айди");
         taskManager.removeTaskById(2);
-        for (Task task2 : taskManager.printAllTask()) {
+        for (Task task2 : taskManager.getAllTask()) {
             System.out.println(task2);
         }
 
         System.out.println("\nУдаление подзадачи по айди");
         taskManager.removeSubtaskById(7);
-        for (Subtask subtask2 : taskManager.printAllSubtask()) {
+        for (Subtask subtask2 : taskManager.getAllSubtask()) {
             System.out.println(subtask2);
         }
 
         System.out.println("\nУдаление эпика по айди");
         taskManager.removeEpicById(5);
-        for (Epic epic1 : taskManager.printAllEpic()) {
+        for (Epic epic1 : taskManager.getAllEpic()) {
             System.out.println(epic1);
         }
 
         System.out.println("\nУдаление всех задач");
         taskManager.deleteAllTask();
-        System.out.println(taskManager.printAllTask());
+        System.out.println(taskManager.getAllTask());
 
         System.out.println("\nУдаление всех подзадач");
         taskManager.deleteAllSubtasks();
-        System.out.println(taskManager.printAllSubtask());
+        System.out.println(taskManager.getAllSubtask());
 
         System.out.println("\nУдаление всех эпиков с их задачами");
         taskManager.deleteAllEpic();
-        System.out.println(taskManager.printAllEpic());
-        System.out.println(taskManager.printAllSubtask());
+        System.out.println(taskManager.getAllEpic());
+        System.out.println(taskManager.getAllSubtask());
 
     }
 }

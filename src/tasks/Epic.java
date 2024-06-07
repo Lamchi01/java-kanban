@@ -1,19 +1,15 @@
 package tasks;
 
-import status.Status;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
 
-    Status status; // IDEA жалуется что ставлю приват, очень хочу узнать почему
     private final ArrayList<Integer> subtaskId;
 
     public Epic(String description, String name) {
         super(description, name);
         subtaskId = new ArrayList<>();
-        status = Status.NEW;
     }
 
     public ArrayList<Integer> getSubtaskId() {

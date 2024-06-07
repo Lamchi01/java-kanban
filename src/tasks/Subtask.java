@@ -1,18 +1,15 @@
 package tasks;
 
-import status.Status;
 
 import java.util.Objects;
 
 public class Subtask extends Task {
 
-    Status status;
     private final int epicId;
 
     public Subtask(String description, String name, int epicId) {
         super(description, name);
         this.epicId = epicId;
-        status = Status.NEW;
     }
 
     public int getEpicId() {

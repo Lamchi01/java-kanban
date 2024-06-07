@@ -26,28 +26,16 @@ public class TaskManager {
         return ++id;
     }
 
-    public ArrayList<Task> printAllTask() {
-        ArrayList<Task> taskList = new ArrayList<>();
-        for (Task task : tasks.values()) {
-            taskList.add(task);
-        }
-        return taskList;
+    public ArrayList<Task> getAllTask() {
+        return new ArrayList<>(tasks.values());
     }
 
-    public ArrayList<Epic> printAllEpic() {
-        ArrayList<Epic> epicList = new ArrayList<>();
-        for (Epic epic : epics.values()) {
-            epicList.add(epic);
-        }
-        return epicList;
+    public ArrayList<Epic> getAllEpic() {
+        return new ArrayList<>(epics.values());
     }
 
-    public ArrayList<Subtask> printAllSubtask() {
-        ArrayList<Subtask> subtaskList = new ArrayList<>();
-        for (Subtask subtask : subtasks.values()) {
-            subtaskList.add(subtask);
-        }
-        return subtaskList;
+    public ArrayList<Subtask> getAllSubtask() {
+        return new ArrayList<>(subtasks.values());
     }
 
     public void createTask(Task task) {
@@ -128,14 +116,12 @@ public class TaskManager {
 
     public ArrayList<Subtask> findAllSubtaskByEpicId(int id) {
         ArrayList<Subtask> subtasksNew = new ArrayList<>();
-        if (epics.containsKey(id)) {
             Epic epic = epics.get(id);
             if (epic != null) {
                 for (Integer subtaskId : epic.getSubtaskId()) {
                     subtasksNew.add(subtasks.get(subtaskId));
                 }
             }
-        }
         return subtasksNew;
     }
 

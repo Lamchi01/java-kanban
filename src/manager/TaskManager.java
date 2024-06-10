@@ -83,11 +83,18 @@ public class TaskManager {
     }
 
     public void removeEpicById(int id) {
+        /*
+        Немного подправил метод, т. к. он не удалял сами Subtask'и
+        которые принадлежат этому эпику
+        И они оставались в HashMap'е
+        Так же отображались в выводе
+         */
         Epic epic = epics.get(id);
         if (epic != null) {
-            for (Integer subtaskId : epic.getSubtaskId()) {
-                epic.getSubtaskId().remove(subtaskId);
+            for (Integer subtask : epic.getSubtaskId()) {
+                subtasks.remove(subtask);
             }
+            epic.getSubtaskId().clear();
         }
         epics.remove(id);
     }

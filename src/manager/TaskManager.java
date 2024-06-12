@@ -162,8 +162,7 @@ public class TaskManager {
         for (Subtask subtask : epicSubtasks) {
             if (subtask.getStatus() == Status.DONE) {
                 countDone++;
-            }
-            if (subtask.getStatus() == Status.NEW) {
+            } else if (subtask.getStatus() == Status.NEW) {
                 countNew++;
             } else {
                 epic.setStatus(Status.IN_PROGRESS);

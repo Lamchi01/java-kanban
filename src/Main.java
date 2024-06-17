@@ -1,3 +1,4 @@
+import manager.Managers;
 import status.Status;
 import manager.TaskManager;
 import tasks.Epic;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        TaskManager taskManager = Managers.getDefault();
 
         taskManager.createTask(new Task("С 18.00 до 22.00", "Учёба в Practicum"));
         taskManager.createTask(new Task("Посмотреть фильм с женой", "Отдохнуть"));
@@ -110,5 +111,9 @@ public class Main {
         System.out.println(taskManager.getAllEpic());
         System.out.println(taskManager.getAllSubtask());
 
+        System.out.println("\nПолучаем историю просмотренных задач");
+        for (Task history : taskManager.getHistory()) {
+            System.out.println(history);
+        }
     }
 }

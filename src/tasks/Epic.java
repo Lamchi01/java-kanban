@@ -1,7 +1,6 @@
 package tasks;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Epic extends Task {
 
@@ -28,19 +27,5 @@ public class Epic extends Task {
                 ", Название ='" + getName() + '\'' +
                 ", Статус выполнения: " + getStatus() +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Epic epic = (Epic) o;
-        return Objects.equals(subtaskId, epic.subtaskId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), subtaskId);
     }
 }

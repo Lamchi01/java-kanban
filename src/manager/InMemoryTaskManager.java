@@ -1,9 +1,9 @@
 package manager;
 
+import status.Status;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
-import status.Status;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Epic> epics;
     private final HashMap<Integer, Subtask> subtasks;
 
-    HistoryManager historyManager;
+    private final HistoryManager historyManager;
 
     public InMemoryTaskManager() {
         historyManager = new InMemoryHistoryManager();
@@ -123,31 +123,34 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task findTaskById(int id) {
-        historyManager.add(tasks.get(id));
-        return tasks.get(id);
+        Task task = tasks.get(id);
+        historyManager.add(task);
+        return task;
     }
 
     @Override
     public Epic findEpicById(int id) {
-        historyManager.add(epics.get(id));
-        return epics.get(id);
+        Epic epic = epics.get(id);
+        historyManager.add(epic);
+        return epic;
     }
 
     @Override
     public Subtask findSubtaskById(int id) {
-        historyManager.add(subtasks.get(id));
-        return subtasks.get(id);
+        Subtask subtask = subtasks.get(id);
+        historyManager.add(subtask);
+        return subtask;
     }
 
     @Override
     public ArrayList<Subtask> findAllSubtaskByEpicId(int id) {
         ArrayList<Subtask> subtasksNew = new ArrayList<>();
-            Epic epic = epics.get(id);
-            if (epic != null) {
-                for (Integer subtaskId : epic.getSubtaskId()) {
-                    subtasksNew.add(subtasks.get(subtaskId));
-                }
+        Epic epic = epics.get(id);
+        if (epic != null) {
+            for (Integer subtaskId : epic.getSubtaskId()) {
+                subtasksNew.add(subtasks.get(subtaskId));
             }
+        }
         return subtasksNew;
     }
 
@@ -200,7 +203,6 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
     }
-
 
     @Override
     public void updateSubtask(Subtask newSubtask) {

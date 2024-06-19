@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class InMemoryHistoryManagerTest {
 
-    private final TaskManager taskManager = new InMemoryTaskManager();
+    private final HistoryManager historyManager = new InMemoryHistoryManager();
     static ArrayList<Task> historyList;
     static Task task;
 
@@ -23,10 +23,8 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void add() {
-        taskManager.createTask(task);
-        taskManager.findTaskById(task.getId());
-
-        historyList = taskManager.getHistory();
+        historyManager.add(task);
+        historyList = historyManager.getHistory();
 
         assertNotNull(historyList, "История пустая.");
         assertEquals(1, historyList.size(), "Ожидаемое значение не совпадает");
@@ -34,11 +32,10 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void add20TasksAndReturnListWith10Tasks() {
-        taskManager.createTask(task);
         for (int i = 0; i < 20; i++) {
-            taskManager.findTaskById(task.getId());
+            historyManager.add(task);
         }
-        historyList = taskManager.getHistory();
+        historyList = historyManager.getHistory();
         assertEquals(10, historyList.size(), "История не соответствует ожидаемому значению");
     }
 }

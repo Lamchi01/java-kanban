@@ -6,7 +6,7 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,7 +33,7 @@ class InMemoryTaskManagerTest {
         assertNotNull(savedTask, "Задача не найдена.");
         assertEquals(task, savedTask, "Задачи не совпадают.");
 
-        final ArrayList<Task> tasks = taskManager.getAllTask();
+        final List<Task> tasks = taskManager.getAllTask();
 
         assertNotNull(tasks, "Задачи не возвращаются.");
         assertEquals(1, tasks.size(), "Неверное количество задач.");
@@ -48,7 +48,7 @@ class InMemoryTaskManagerTest {
         assertNotNull(savedEpic, "Задача не найдена.");
         assertEquals(epic, savedEpic, "Задачи не совпадают");
 
-        final ArrayList<Epic> epics = taskManager.getAllEpic();
+        final List<Epic> epics = taskManager.getAllEpic();
 
         assertNotNull(epics, "Задачи не возвращаются");
         assertEquals(1, epics.size(), "Неверное количество задач.");
@@ -65,7 +65,7 @@ class InMemoryTaskManagerTest {
         assertNotNull(savedSubtask, "Задача не найдена.");
         assertEquals(subtask, savedSubtask, "Задачи не совпадают");
 
-        final ArrayList<Subtask> subtasks = taskManager.getAllSubtask();
+        final List<Subtask> subtasks = taskManager.getAllSubtask();
 
         assertNotNull(subtasks, "Задачи не возвращаются");
         assertEquals(1, subtasks.size(), "Неверное количество задач.");
@@ -97,21 +97,31 @@ class InMemoryTaskManagerTest {
     @Test
     void deleteTasksAndShouldReturnEmptyList() {
         taskManager.deleteAllTask();
-        ArrayList<Task> tasks = taskManager.getAllTask();
+        List<Task> tasks = taskManager.getAllTask();
         assertTrue(tasks.isEmpty(), "Список не пуст");
     }
 
     @Test
     void deleteEpicsAndShouldReturnEmptyList() {
         taskManager.deleteAllEpic();
-        ArrayList<Epic> epics = taskManager.getAllEpic();
+        List<Epic> epics = taskManager.getAllEpic();
         assertTrue(epics.isEmpty(), "Список не пуст");
     }
 
     @Test
     void deleteSubtasksAndShouldReturnEmptyList() {
         taskManager.deleteAllSubtasks();
-        ArrayList<Subtask> subtasks = taskManager.getAllSubtask();
+        List<Subtask> subtasks = taskManager.getAllSubtask();
         assertTrue(subtasks.isEmpty(), "Список не пуст");
+    }
+
+    @Test
+    void shouldReturnEmptyListSubtasksAfterDeleteEpic() {
+        taskManager.createEpic(epic);
+        taskManager.createSubtask(subtask);
+
+        taskManager.removeEpicById(1);
+
+        assertEquals(0, epic.getSubtaskId().size());
     }
 }

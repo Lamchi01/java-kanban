@@ -5,7 +5,7 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -75,7 +75,7 @@ public class Main {
         System.out.println(subtask1);
 
         System.out.println("\nПоиск подзадач для эпика по айди");
-        ArrayList<Subtask> subtaskByEpicId = taskManager.findAllSubtaskByEpicId(4);
+        List<Subtask> subtaskByEpicId = taskManager.findAllSubtaskByEpicId(4);
         for (Subtask subtask2 : subtaskByEpicId) {
             System.out.println(subtask2);
         }

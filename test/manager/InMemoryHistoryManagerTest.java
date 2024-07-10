@@ -2,22 +2,30 @@ package manager;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import tasks.Epic;
+import tasks.Subtask;
 import tasks.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class InMemoryHistoryManagerTest {
 
     private final HistoryManager historyManager = new InMemoryHistoryManager();
-    static ArrayList<Task> historyList;
+    static List<Task> historyList;
     static Task task;
+    static Epic epic;
+    static Subtask subtask;
 
     @BeforeAll
     static void beforeAll() {
         task = new Task("Test addNewTask", "Test addNewTask description");
+        epic = new Epic("Test addNewTask", "Test addNewTask description");
+        subtask = new Subtask("Test addNewTask", "Test addNewTask description", 2);
         historyList = new ArrayList<>();
     }
 
@@ -31,11 +39,19 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void add20TasksAndReturnListWith10Tasks() {
-        for (int i = 0; i < 20; i++) {
-            historyManager.add(task);
-        }
+    void checkForUniquenessInList() {
+        TaskManager taskManager = new InMemoryTaskManager();
+        taskManager.createTask(task);
+        taskManager.createEpic(epic);
+        taskManager.createSubtask(subtask);
+
+        historyManager.add(task);
+        historyManager.add(epic);
+        historyManager.add(subtask);
+        historyManager.add(task);
+
         historyList = historyManager.getHistory();
-        assertEquals(10, historyList.size(), "История не соответствует ожидаемому значению");
+
+        assertNotEquals(task, historyList.getFirst());
     }
 }

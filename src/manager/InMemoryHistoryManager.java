@@ -13,10 +13,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        int taskId = task.getId();
-        if (history.customMap.containsKey(taskId)) {
-            history.removeNode(history.customMap.get(taskId));
-        }
+        remove(task.getId());
         history.linkLast(task);
     }
 
@@ -35,8 +32,10 @@ public class InMemoryHistoryManager implements HistoryManager {
         private final Task task;
         private Node next;
 
-        private Node(Task task) {
+        private Node(Task task, Node prev, Node next) {
             this.task = task;
+            this.prev = prev;
+            this.next = next;
         }
     }
 
@@ -45,15 +44,12 @@ public class InMemoryHistoryManager implements HistoryManager {
         private Node head;
         private Node tail;
 
-
         private void linkLast(Task task) {
-            Node newNode = new Node(task);
-            // пытался создать ссылку на ноду строкой Node prev = newNode.prev не получается
-            // во время проверки prev остаётся null
+            Node newNode = new Node(task, tail, null);
+
             if (tail == null) {
                 head = newNode;
             } else {
-                newNode.prev = tail;
                 tail.next = newNode;
             }
             tail = newNode;
@@ -79,7 +75,6 @@ public class InMemoryHistoryManager implements HistoryManager {
                 if (node == head) {
                     head = next;
                 }
-
                 if (node == tail) {
                     tail = prev;
                 }

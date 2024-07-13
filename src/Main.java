@@ -1,11 +1,11 @@
 import manager.Managers;
-import status.Status;
 import manager.TaskManager;
+import status.Status;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -21,9 +21,9 @@ public class Main {
 
         taskManager.createSubtask(new Subtask("Помыть пол", "Уборка", 4));
         taskManager.createSubtask(new Subtask("Пропылесосить ковры", "Уборка", 4));
-
         taskManager.createSubtask(new Subtask("Пропылесосить салон", "Чистка", 5));
         taskManager.createSubtask(new Subtask("Съездить на мойку", "Чистка", 5));
+
         System.out.println("Вывод на экран задач");
         for (Task task : taskManager.getAllTask()) { // добавил вывод через for, что бы было не всё в 1 куче
             System.out.println(task);
@@ -75,7 +75,7 @@ public class Main {
         System.out.println(subtask1);
 
         System.out.println("\nПоиск подзадач для эпика по айди");
-        ArrayList<Subtask> subtaskByEpicId = taskManager.findAllSubtaskByEpicId(4);
+        List<Subtask> subtaskByEpicId = taskManager.findAllSubtaskByEpicId(4);
         for (Subtask subtask2 : subtaskByEpicId) {
             System.out.println(subtask2);
         }

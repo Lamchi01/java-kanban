@@ -23,7 +23,7 @@ public class Task {
         this.status = status;
     }
 
-    public Task(int id, String name, Status status, String description){
+    public Task(int id, String name, Status status, String description) {
         this.id = id;
         this.name = name;
         this.status = status;

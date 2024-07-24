@@ -29,24 +29,23 @@ class FileBackedTaskManagerTest {
     }
 
     @Test
-    void shouldReturnNoEmptyLoadFromStringFile() {
+    void loadFromFile() {
+        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
+
+        fileBackedTaskManager.createTask(task);
+        fileBackedTaskManager.createEpic(epic);
+        fileBackedTaskManager.createSubtask(subtask); // Инициализируем менеджер и добавляем задачи в тестовый файл
+
+        assertEquals(1, fileBackedTaskManager.tasks.size()); // проверяем, добавились ли задачи в списки
+        assertEquals(1, fileBackedTaskManager.epics.size());
+        assertEquals(1, fileBackedTaskManager.subtasks.size());
+
         FileBackedTaskManager fileManager = FileBackedTaskManager.loadFromFile(file);
+        /* создаём уже выгруженный менеджер из метода loadFromFile не создавая задач
+        Сразу же проверяем одинаковые ли задачи в 1 и во 2 менеджере */
 
-        fileManager.createTask(task);
-        fileManager.createEpic(epic);
-        fileManager.createSubtask(subtask);
-
-        assertEquals(1, fileManager.tasks.size());
-        assertEquals(1, fileManager.epics.size());
-        assertEquals(1, fileManager.tasks.size());
-    }
-
-    @Test
-    void shouldReturnEmptyLoadFromStringFile() {
-        FileBackedTaskManager fileManager = FileBackedTaskManager.loadFromFile(file);
-
-        assertEquals(0, fileManager.tasks.size());
-        assertEquals(0, fileManager.epics.size());
-        assertEquals(0, fileManager.tasks.size());
+        assertEquals(fileBackedTaskManager.tasks.get(0), fileManager.tasks.get(0));
+        assertEquals(fileBackedTaskManager.epics.get(1), fileManager.epics.get(1));
+        assertEquals(fileBackedTaskManager.subtasks.get(2), fileManager.subtasks.get(2));
     }
 }

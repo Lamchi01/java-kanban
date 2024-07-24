@@ -27,7 +27,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks = new HashMap<>();
     }
 
-    private int generateId() {
+    protected int generateId() {
         return ++id;
     }
 

@@ -44,8 +44,8 @@ class FileBackedTaskManagerTest {
         /* создаём уже выгруженный менеджер из метода loadFromFile не создавая задач
         Сразу же проверяем одинаковые ли задачи в 1 и во 2 менеджере */
 
-        assertEquals(fileBackedTaskManager.tasks.get(0), fileManager.tasks.get(0));
-        assertEquals(fileBackedTaskManager.epics.get(1), fileManager.epics.get(1));
-        assertEquals(fileBackedTaskManager.subtasks.get(2), fileManager.subtasks.get(2));
+        assertEquals(fileBackedTaskManager.getAllTask(), fileManager.getAllTask());
+        assertEquals(fileBackedTaskManager.getAllEpic(), fileManager.getAllEpic());
+        assertEquals(fileBackedTaskManager.getAllSubtask(), fileManager.getAllSubtask());
     }
 }

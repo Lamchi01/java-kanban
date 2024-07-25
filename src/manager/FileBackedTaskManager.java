@@ -40,7 +40,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 } else {
                     fileManager.tasks.put(task.getId(), task);
                 }
-                fileManager.generateId(); // избегая дублирования кода выносим из блока if-else
+                if (fileManager.id < task.getId()) {
+                    fileManager.id = task.getId();
+                }
             }
         } catch (IOException e) {
             throw new ManagerSaveException("Не удалось получить данные из файла");

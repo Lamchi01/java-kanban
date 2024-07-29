@@ -1,16 +1,30 @@
-import manager.Managers;
-import manager.TaskManager;
-import status.Status;
+import manager.FileBackedTaskManager;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.util.List;
+import java.io.File;
 
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDefault();
+        File file = new File("File.csv");
+        FileBackedTaskManager fileManager = FileBackedTaskManager.loadFromFile(file);
+
+        Task task1 = new Task("С 18.00 до 22.00", "Учёба в Practicum");
+        fileManager.createTask(task1);
+
+        Epic epic1 = new Epic("Уборка", "Убраться в квартире");
+        fileManager.createEpic(epic1);
+
+        Subtask subtask1 = new Subtask("Помыть пол", "Уборка", 2);
+        fileManager.createSubtask(subtask1);
+
+        System.out.println(fileManager.getAllTask());
+        System.out.println(fileManager.getAllEpic());
+        System.out.println(fileManager.getAllSubtask());
+
+/*        TaskManager taskManager = Managers.getDefault();
 
         taskManager.createTask(new Task("С 18.00 до 22.00", "Учёба в Practicum"));
         taskManager.createTask(new Task("Посмотреть фильм с женой", "Отдохнуть"));
@@ -114,6 +128,6 @@ public class Main {
         System.out.println("\nПолучаем историю просмотренных задач");
         for (Task history : taskManager.getHistory()) {
             System.out.println(history);
-        }
+        } */
     }
 }

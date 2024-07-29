@@ -1,5 +1,6 @@
 package tasks;
 
+import manager.TypeTask;
 import status.Status;
 
 import java.util.Objects;
@@ -14,6 +15,19 @@ public class Task {
         this.description = description;
         this.name = name;
         status = Status.NEW;
+    }
+
+    public Task(String description, String name, Status status) {
+        this.description = description;
+        this.name = name;
+        this.status = status;
+    }
+
+    public Task(int id, String name, Status status, String description) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.description = description;
     }
 
     public String getDescription() {
@@ -48,9 +62,13 @@ public class Task {
         this.status = status;
     }
 
+    public TypeTask getType() {
+        return TypeTask.TASK;
+    }
+
     @Override
     public String toString() {
-        return "Task{" +
+        return "Task {" +
                 "Описание ='" + description + '\'' +
                 ", Айди задачи =" + id +
                 ", Название ='" + name + '\'' +

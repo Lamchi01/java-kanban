@@ -17,7 +17,7 @@ import java.nio.file.Files;
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private final File file;
-    private static final String HEADER = "id,type,name,status,description,epic\n";
+    private static final String HEADER = "id,type,name,status,description,start,end,duration,epic\n";
 
     public FileBackedTaskManager(File file) {
         this.file = file;

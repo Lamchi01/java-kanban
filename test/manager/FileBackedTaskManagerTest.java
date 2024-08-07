@@ -9,10 +9,12 @@ import tasks.Task;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FileBackedTaskManagerTest {
+class FileBackedTaskManagerTest extends TaskManagerTest {
 
     File file;
     Task task;
@@ -21,6 +23,7 @@ class FileBackedTaskManagerTest {
 
     @BeforeEach
     void beforeEach() throws IOException {
+        taskManager = new InMemoryTaskManager();
         file = File.createTempFile("test", ".csv");
 
         task = new Task("test", "testName", Status.IN_PROGRESS);
@@ -32,8 +35,16 @@ class FileBackedTaskManagerTest {
     void loadFromFile() {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
 
+        task.setStartTime(LocalDateTime.of(2024, 8, 10, 15, 0));
+        task.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.createTask(task);
+
+        epic.setStartTime(LocalDateTime.of(2024, 8, 10, 16, 0));
+        epic.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.createEpic(epic);
+
+        subtask.setStartTime(LocalDateTime.of(2024, 8, 10, 17, 0));
+        subtask.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.createSubtask(subtask); // Инициализируем менеджер и добавляем задачи в тестовый файл
 
         assertEquals(1, fileBackedTaskManager.tasks.size()); // проверяем, добавились ли задачи в списки

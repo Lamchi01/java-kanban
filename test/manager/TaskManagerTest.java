@@ -1,31 +1,25 @@
 package manager;
 
+import exception.ManagerSaveException;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryTaskManagerTest {
+abstract class TaskManagerTest<T extends TaskManager> {
 
-    private static TaskManager taskManager;
-    private static Task task;
-    private static Epic epic;
-    private static Subtask subtask;
-
-    @BeforeEach
-    void beforeEach() {
-        taskManager = new InMemoryTaskManager();
-        task = new Task("Test addNewTask description", "Test addNewTask");
-        epic = new Epic("Test addNewEpic description", "Test addNewEpic");
-        subtask = new Subtask("Test addNewSubtask description", "Test addNewSubtask", 1);
-    }
+    protected T taskManager;
+    private final Task task = new Task("Test addNewTask description", "Test addNewTask");
+    private final Epic epic = new Epic("Test addNewEpic description", "Test addNewEpic");
+    private final Subtask subtask = new Subtask("Test addNewSubtask description",
+            "Test addNewSubtask", 1);
 
     @Test
     void addNewTask() {
@@ -125,5 +119,21 @@ class InMemoryTaskManagerTest {
         taskManager.removeEpicById(1);
 
         assertEquals(0, epic.getSubtaskId().size());
+    }
+
+    @Test
+    void checkOnCorrectIntersection() {
+        epic.setStartTime(LocalDateTime.of(2024, 8, 10, 10,0));
+        epic.setDuration(Duration.ofMinutes(15));
+        taskManager.createEpic(epic);
+
+        task.setStartTime(LocalDateTime.now());
+        task.setDuration(Duration.ofMinutes(60));
+        taskManager.createTask(task);
+
+        subtask.setStartTime(LocalDateTime.now().plusMinutes(20));
+        subtask.setDuration(Duration.ofMinutes(60));
+
+        assertThrows(ManagerSaveException.class, () -> taskManager.createSubtask(subtask));
     }
 }

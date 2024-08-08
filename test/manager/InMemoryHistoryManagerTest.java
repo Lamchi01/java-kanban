@@ -6,7 +6,6 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,26 +35,51 @@ class InMemoryHistoryManagerTest {
     @Test
     void add() {
         historyManager.add(task);
-        historyList = historyManager.getHistory();
 
-        assertNotNull(historyList, "История пустая.");
-        assertEquals(1, historyList.size(), "Ожидаемое значение не совпадает");
+        assertNotNull(historyManager.getHistory(), "История пустая.");
+        assertEquals(historyManager.getHistory().getFirst(), task, "Ожидаемое значение не совпадает");
     }
 
     @Test
     void checkForUniquenessInList() {
-        TaskManager taskManager = new InMemoryTaskManager();
-        taskManager.createTask(task);
-        taskManager.createEpic(epic);
-        taskManager.createSubtask(subtask);
-
         historyManager.add(task);
         historyManager.add(epic);
         historyManager.add(subtask);
         historyManager.add(task);
 
-        historyList = historyManager.getHistory();
+        assertNotEquals(task, historyManager.getHistory().getFirst());
+    }
 
-        assertNotEquals(task, historyList.getFirst());
+    @Test
+    void removeFirstHistoryTask() {
+        historyManager.add(task);
+        historyManager.add(epic);
+        historyManager.add(subtask);
+
+        historyManager.remove(task.getId());
+
+        assertEquals(historyManager.getHistory(), List.of(epic, subtask));
+    }
+
+    @Test
+    void removeMidHistoryTask() {
+        historyManager.add(task);
+        historyManager.add(epic);
+        historyManager.add(subtask);
+
+        historyManager.remove(epic.getId());
+
+        assertEquals(historyManager.getHistory(), List.of(task, subtask));
+    }
+
+    @Test
+    void removeLastHistoryTask() {
+        historyManager.add(task);
+        historyManager.add(epic);
+        historyManager.add(subtask);
+
+        historyManager.remove(subtask.getId());
+
+        assertEquals(historyManager.getHistory(), List.of(task, epic));
     }
 }

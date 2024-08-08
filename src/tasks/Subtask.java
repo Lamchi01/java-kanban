@@ -3,6 +3,9 @@ package tasks;
 import manager.TypeTask;
 import status.Status;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Subtask extends Task {
 
     private final int epicId;
@@ -17,8 +20,9 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
-    public Subtask(int id, String name, Status status, String description, int epicId) {
-        super(id, name, status, description);
+    public Subtask(int id, String name, Status status, String description, LocalDateTime startTime,
+                   Duration duration, int epicId) {
+        super(id, name, status, description, startTime, duration);
         this.epicId = epicId;
     }
 

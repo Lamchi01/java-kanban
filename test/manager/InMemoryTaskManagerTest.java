@@ -1,30 +1,29 @@
 package manager;
 
+import org.junit.jupiter.api.BeforeEach;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryTaskManagerTest {
+class InMemoryTaskManagerTest extends TaskManagerTest {
 
-    private static TaskManager taskManager;
-    private static Task task;
-    private static Epic epic;
-    private static Subtask subtask;
+    static Task task;
+    static Epic epic;
+    static Subtask subtask;
 
     @BeforeEach
     void beforeEach() {
         taskManager = new InMemoryTaskManager();
         task = new Task("Test addNewTask description", "Test addNewTask");
         epic = new Epic("Test addNewEpic description", "Test addNewEpic");
-        subtask = new Subtask("Test addNewSubtask description", "Test addNewSubtask", 1);
+        subtask = new Subtask("Test addNewSubtask description",
+                "Test addNewSubtask", 1);
     }
 
     @Test
@@ -72,58 +71,5 @@ class InMemoryTaskManagerTest {
         assertNotNull(subtasks, "Задачи не возвращаются");
         assertEquals(1, subtasks.size(), "Неверное количество задач.");
         assertEquals(subtask, subtasks.getFirst(), "Задачи не совпадают");
-    }
-
-    @Test
-    void shouldReturnTaskAndFindById() {
-        final Task task = new Task("addNewTaskDescription", "addNewTask");
-        taskManager.createTask(task);
-        assertNotNull(taskManager.findTaskById(task.getId()));
-    }
-
-    @Test
-    void shouldReturnEpicAndFindById() {
-        final Epic epic = new Epic("addNewEpicDescription", "addNewEpic");
-        taskManager.createEpic(epic);
-        assertNotNull(taskManager.findEpicById(epic.getId()));
-    }
-
-    @Test
-    void shouldReturnSubtaskAndFindById() {
-        taskManager.createEpic(epic);
-        final Subtask subtask = new Subtask("addNewSubtaskDescription", "addNewSubtask", epic.getId());
-        taskManager.createSubtask(subtask);
-        assertNotNull(taskManager.findSubtaskById(subtask.getId()));
-    }
-
-    @Test
-    void deleteTasksAndShouldReturnEmptyList() {
-        taskManager.deleteAllTask();
-        List<Task> tasks = taskManager.getAllTask();
-        assertTrue(tasks.isEmpty(), "Список не пуст");
-    }
-
-    @Test
-    void deleteEpicsAndShouldReturnEmptyList() {
-        taskManager.deleteAllEpic();
-        List<Epic> epics = taskManager.getAllEpic();
-        assertTrue(epics.isEmpty(), "Список не пуст");
-    }
-
-    @Test
-    void deleteSubtasksAndShouldReturnEmptyList() {
-        taskManager.deleteAllSubtasks();
-        List<Subtask> subtasks = taskManager.getAllSubtask();
-        assertTrue(subtasks.isEmpty(), "Список не пуст");
-    }
-
-    @Test
-    void shouldReturnEmptyListSubtasksAfterDeleteEpic() {
-        taskManager.createEpic(epic);
-        taskManager.createSubtask(subtask);
-
-        taskManager.removeEpicById(1);
-
-        assertEquals(0, epic.getSubtaskId().size());
     }
 }

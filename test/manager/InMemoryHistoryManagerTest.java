@@ -27,6 +27,10 @@ class InMemoryHistoryManagerTest {
         epic = new Epic("Test addNewTask", "Test addNewTask description");
         subtask = new Subtask("Test addNewTask", "Test addNewTask description", epic.getId());
         historyList = new ArrayList<>();
+
+        task.setId(1);
+        epic.setId(2);
+        subtask.setId(3);
     }
 
     @Test

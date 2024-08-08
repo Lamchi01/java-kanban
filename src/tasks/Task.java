@@ -14,7 +14,6 @@ public class Task {
     private Status status;
     private Duration duration;
     private LocalDateTime startTime;
-    private LocalDateTime endTime;
 
     public Task(String description, String name) {
         this.description = description;
@@ -28,13 +27,12 @@ public class Task {
         this.status = status;
     }
 
-    public Task(int id, String name, Status status, String description, LocalDateTime startTime, LocalDateTime endTime, Duration duration) {
+    public Task(int id, String name, Status status, String description, LocalDateTime startTime, Duration duration) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.description = description;
         this.startTime = startTime;
-        this.endTime = endTime;
         this.duration = duration;
     }
 
@@ -59,10 +57,6 @@ public class Task {
 
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
     }
 
     public String getDescription() {
@@ -121,9 +115,6 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, name);
+        return Objects.hash(id);
     }
 }
-
-
-

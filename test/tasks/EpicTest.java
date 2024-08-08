@@ -20,5 +20,4 @@ class EpicTest {
         epic1.setId(1);
         assertEquals(epic, epic1, "Это не одна задача");
     }
-
 }

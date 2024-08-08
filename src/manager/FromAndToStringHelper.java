@@ -25,17 +25,17 @@ class FromAndToStringHelper {
         String description = arrays[4];
         LocalDateTime startTime = LocalDateTime.of(LocalDate.parse(arrays[5], formatterDate),
                 LocalTime.parse(arrays[6], formatterTime));
-        LocalDateTime endTime = LocalDateTime.of(LocalDate.parse(arrays[7], formatterDate),
-                LocalTime.parse(arrays[8], formatterTime));
         Duration duration = Duration.ofMinutes(Long.parseLong(arrays[9]));
 
         if (typeTask.equals("EPIC")) {
-            return new Epic(id, name, status, description, startTime, endTime, duration);
+            LocalDateTime epicEndTime = LocalDateTime.of(LocalDate.parse(arrays[7], formatterDate),
+                    LocalTime.parse(arrays[8], formatterTime));
+            return new Epic(id, name, status, description, startTime, epicEndTime, duration);
         } else if (typeTask.equals("SUBTASK")) {
             int epicId = Integer.parseInt(arrays[10]);
-            return new Subtask(id, name, status, description, startTime, endTime, duration, epicId);
+            return new Subtask(id, name, status, description, startTime, duration, epicId);
         } else {
-            return new Task(id, name, status, description, startTime, endTime, duration);
+            return new Task(id, name, status, description, startTime, duration);
         }
     }
 
@@ -48,14 +48,18 @@ class FromAndToStringHelper {
 
     protected static String toString(Task task) {
 
+        String startTime = task.getStartTime() != null ? task.getStartTime().format(formatter) : "";
+        String endTime = task.getEndTime() != null ? task.getEndTime().format(formatter) : "";
+        String duration = task.getDuration() != null ? String.valueOf(task.getDuration().toMinutes()) : "";
+
         return task.getId() + "," +
                 task.getType() + "," +
                 task.getName() + "," +
                 task.getStatus() + "," +
                 task.getDescription() + "," +
-                task.getStartTime().format(formatter) + "," +
-                task.getEndTime().format(formatter) + "," +
-                task.getDuration().toMinutes() + "," +
+                startTime + "," +
+                endTime + "," +
+                duration + "," +
                 getEpicIdForSubtask(task);
     }
 }

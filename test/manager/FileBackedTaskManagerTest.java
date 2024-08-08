@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,8 +24,8 @@ class FileBackedTaskManagerTest extends TaskManagerTest {
 
     @BeforeEach
     void beforeEach() throws IOException {
-        taskManager = new InMemoryTaskManager();
         file = File.createTempFile("test", ".csv");
+        taskManager = new FileBackedTaskManager(file);
 
         task = new Task("test", "testName", Status.IN_PROGRESS);
         epic = new Epic("test", "testName", Status.IN_PROGRESS);
@@ -58,5 +59,8 @@ class FileBackedTaskManagerTest extends TaskManagerTest {
         assertEquals(fileBackedTaskManager.getAllTask(), fileManager.getAllTask());
         assertEquals(fileBackedTaskManager.getAllEpic(), fileManager.getAllEpic());
         assertEquals(fileBackedTaskManager.getAllSubtask(), fileManager.getAllSubtask());
+
+        // Берём реализацию файлового менеджера с загруженного файла
+        assertEquals(fileManager.getPrioritized(), List.of(task, subtask));
     }
 }

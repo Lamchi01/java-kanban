@@ -43,6 +43,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (fileManager.id < task.getId()) {
                     fileManager.id = task.getId();
                 }
+                fileManager.addPrioritized(task);
             }
         } catch (IOException e) {
             throw new ManagerSaveException("Не удалось получить данные из файла");

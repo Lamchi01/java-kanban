@@ -20,19 +20,20 @@ public class Epic extends Task {
 
     public Epic(int id, String name, Status status, String description, LocalDateTime startTime,
                 LocalDateTime endTime, Duration duration) {
-        super(id, name, status, description, startTime, endTime, duration);
+        super(id, name, status, description, startTime, duration);
+        this.endTime = endTime;
     }
 
     public Epic(String description, String name, Status status) {
         super(description, name, status);
     }
 
-    @Override
     public LocalDateTime getEndTime() {
-        if (duration == null) {
-            return startTime;
-        }
-        return startTime.plus(duration);
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override

@@ -35,6 +35,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         private Node(Task task) {
             this.task = task;
         }
+
         private Task getTask() {
             return task;
         }

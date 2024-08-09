@@ -40,6 +40,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
     }
+
     private static class CustomLinkedList {
         private final Map<Integer, Node> customMap = new HashMap<>();
         private Node head;
@@ -89,6 +90,7 @@ public class InMemoryHistoryManager implements HistoryManager {
                 }
             }
         }
+
         private List<Task> getTaskList() {
             List<Task> list = new ArrayList<>();
             Node element = head;
@@ -98,6 +100,5 @@ public class InMemoryHistoryManager implements HistoryManager {
             }
             return list;
         }
-
     }
 }

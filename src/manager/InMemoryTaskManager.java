@@ -189,6 +189,8 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateTask(Task task) {
         if (tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
+            validatePrioritized(task);
+            addPrioritized(task);
         }
     }
 
@@ -271,6 +273,8 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.replace(newSubtask.getId(), newSubtask);
         updateEpicStatus(epic);
         updateEpicTime(epic);
+        validatePrioritized(newSubtask);
+        addPrioritized(newSubtask);
     }
 
     @Override
@@ -283,10 +287,14 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(prioritized);
     }
 
-    public void addPrioritized(Task task) {
+    protected void addPrioritized(Task task) {
+        if (task.getType().equals(TypeTask.EPIC)) return;
+        // Если задача окажется эпиком, метод добавления будет завершён
         List<Task> taskList = getPrioritized();
         if (task.getStartTime() != null && task.getEndTime() != null) {
             for (Task task1 : taskList) {
+                if (task1.getId() == task.getId()) prioritized.remove(task1);
+                // Будет удалять задачу из отсортированного списка если она совпадает
                 if (checkForIntersection(task, task1)) {
                     return;
                 }
@@ -302,14 +310,14 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private void validatePrioritized(Task task) {
+        if (task == null || task.getStartTime() == null) return;
         List<Task> taskList = getPrioritized();
 
         for (Task mapTask : taskList) {
-            boolean taskIntersection = checkForIntersection(task, mapTask);
-
             if (mapTask == task) {
                 continue;
             }
+            boolean taskIntersection = checkForIntersection(task, mapTask);
 
             if (taskIntersection) {
                 throw new ManagerSaveException("Задачи - " + task.getId() + " и - " + mapTask.getId() + " пересекаются");

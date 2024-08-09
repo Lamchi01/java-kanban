@@ -7,7 +7,6 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,40 +16,87 @@ import static org.junit.jupiter.api.Assertions.*;
 abstract class TaskManagerTest<T extends TaskManager> {
 
     protected T taskManager;
-    static Task task;
-    static Epic epic;
-    static Subtask subtask;
+    protected Task task;
+    protected Epic epic;
+    protected Subtask subtask;
 
     @BeforeEach
-    void beforeEach() throws IOException {
+    void beforeEach() {
         task = new Task("addNewTaskDescription", "addNewTask");
         task.setStartTime(LocalDateTime.now());
         task.setDuration(Duration.ofMinutes(15));
+
         epic = new Epic("addNewEpicDescription", "addNewEpic");
-        subtask = new Subtask("addNewSubtaskDescription", "addNewSubtask", epic.getId());
+
+        subtask = new Subtask("addNewSubtaskDescription", "addNewSubtask", 2);
         subtask.setStartTime(LocalDateTime.now().plusHours(1));
         subtask.setDuration(Duration.ofMinutes(15));
     }
 
     @Test
+    void addNewTask() {
+        int taskId = taskManager.createTask(task);
+        Task savedTask = taskManager.findTaskById(taskId);
+
+        assertNotNull(savedTask, "Задача не найдена.");
+        assertEquals(task, savedTask, "Задачи не совпадают.");
+
+        final List<Task> tasks = taskManager.getAllTask();
+
+        assertNotNull(tasks, "Задачи не возвращаются.");
+        assertEquals(1, tasks.size(), "Неверное количество задач.");
+        assertEquals(task, tasks.getFirst(), "Задачи не совпадают.");
+    }
+
+    @Test
+    void addNewEpic() {
+        int epicId = taskManager.createEpic(epic);
+        Epic savedEpic = taskManager.findEpicById(epicId);
+
+        assertNotNull(savedEpic, "Задача не найдена.");
+        assertEquals(epic, savedEpic, "Задачи не совпадают");
+
+        final List<Epic> epics = taskManager.getAllEpic();
+
+        assertNotNull(epics, "Задачи не возвращаются");
+        assertEquals(1, epics.size(), "Неверное количество задач.");
+        assertEquals(epic, epics.getFirst(), "Задачи не совпадают");
+    }
+
+    @Test
+    void addNewSubtask() {
+        taskManager.createTask(task);
+        taskManager.createEpic(epic);
+
+        final int subtaskId = taskManager.createSubtask(subtask);
+        final Subtask savedSubtask = taskManager.findSubtaskById(subtaskId);
+
+        assertNotNull(savedSubtask, "Задача не найдена.");
+        assertEquals(subtask, savedSubtask, "Задачи не совпадают");
+
+        final List<Subtask> subtasks = taskManager.getAllSubtask();
+
+        assertNotNull(subtasks, "Задачи не возвращаются");
+        assertEquals(1, subtasks.size(), "Неверное количество задач.");
+        assertEquals(subtask, subtasks.getFirst(), "Задачи не совпадают");
+    }
+
+    @Test
     void shouldReturnTaskAndFindById() {
-        final Task task = new Task("addNewTaskDescription", "addNewTask");
         taskManager.createTask(task);
         assertNotNull(taskManager.findTaskById(task.getId()));
     }
 
     @Test
     void shouldReturnEpicAndFindById() {
-        final Epic epic = new Epic("addNewEpicDescription", "addNewEpic");
         taskManager.createEpic(epic);
         assertNotNull(taskManager.findEpicById(epic.getId()));
     }
 
     @Test
     void shouldReturnSubtaskAndFindById() {
-        final Epic epic = new Epic("addNewEpicDescription", "addNewEpic");
+        taskManager.createTask(task);
         taskManager.createEpic(epic);
-        final Subtask subtask = new Subtask("addNewSubtaskDescription", "addNewSubtask", epic.getId());
         taskManager.createSubtask(subtask);
         assertNotNull(taskManager.findSubtaskById(subtask.getId()));
     }
@@ -78,7 +124,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void removeTaskById() {
-        final Task task = new Task("addNewTaskDescription", "addNewTask");
         taskManager.createTask(task);
         assertNotNull(taskManager.findTaskById(task.getId()));
 
@@ -88,8 +133,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void shouldReturnEmptyListSubtasksAfterDeleteEpic() {
-        final Epic epic = new Epic("addNewEpicDescription", "addNewEpic");
-        final Subtask subtask = new Subtask("addNewSubtaskDescription", "addNewSubtask", epic.getId());
         taskManager.createEpic(epic);
         taskManager.createSubtask(subtask);
 
@@ -100,7 +143,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void removeSubtaskById() {
-        final Task task = new Task("addNewTaskDescription", "addNewTask");
         taskManager.createTask(task);
         assertEquals(taskManager.getAllTask(), List.of(task));
 
@@ -110,8 +152,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void getHistory() {
-        final Task task = new Task("addNewTaskDescription", "addNewTask");
-        final Epic epic = new Epic("addNewEpicDescription", "addNewEpic");
         taskManager.createTask(task);
         taskManager.createEpic(epic);
 
@@ -123,15 +163,12 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void getPrioritized() {
-        final Task task = new Task("addNewTaskDescription", "addNewTask");
         task.setStartTime(LocalDateTime.now());
         task.setDuration(Duration.ofMinutes(15));
         taskManager.createTask(task);
 
-        final Epic epic = new Epic("addNewEpicDescription", "addNewEpic");
         taskManager.createEpic(epic);
 
-        final Subtask subtask = new Subtask("addNewSubtaskDescription", "addNewSubtask", epic.getId());
         subtask.setStartTime(LocalDateTime.now().minusMinutes(60));
         subtask.setDuration(Duration.ofMinutes(15));
         taskManager.createSubtask(subtask);
@@ -141,17 +178,14 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void checkOnCorrectIntersection() {
-        final Epic epic = new Epic("addNewEpicDescription", "addNewEpic");
         epic.setStartTime(LocalDateTime.of(2024, 8, 10, 10,0));
         epic.setDuration(Duration.ofMinutes(15));
         taskManager.createEpic(epic);
 
-        final Task task = new Task("addNewTaskDescription", "addNewTask");
         task.setStartTime(LocalDateTime.now());
         task.setDuration(Duration.ofMinutes(60));
         taskManager.createTask(task);
 
-        final Subtask subtask = new Subtask("addNewSubtaskDescription", "addNewSubtask", epic.getId());
         subtask.setStartTime(LocalDateTime.now().plusMinutes(20));
         subtask.setDuration(Duration.ofMinutes(60));
 

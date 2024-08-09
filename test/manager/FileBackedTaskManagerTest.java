@@ -1,35 +1,22 @@
 package manager;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import status.Status;
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FileBackedTaskManagerTest extends TaskManagerTest {
+class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
 
     File file;
-    Task task;
-    Epic epic;
-    Subtask subtask;
 
-    @BeforeEach
-    void beforeEach() throws IOException {
+    FileBackedTaskManagerTest() throws IOException {
         file = File.createTempFile("test", ".csv");
         taskManager = new FileBackedTaskManager(file);
-
-        task = new Task("test", "testName", Status.IN_PROGRESS);
-        epic = new Epic("test", "testName", Status.IN_PROGRESS);
-        subtask = new Subtask("test", "testName", Status.IN_PROGRESS, 2);
     }
 
     @Test
@@ -60,7 +47,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest {
         assertEquals(fileBackedTaskManager.getAllEpic(), fileManager.getAllEpic());
         assertEquals(fileBackedTaskManager.getAllSubtask(), fileManager.getAllSubtask());
 
-        // Берём реализацию файлового менеджера с загруженного файла
-        assertEquals(fileManager.getPrioritized(), List.of(task, subtask));
+        // сравниваем результаты двух объектов классов, до выгрузки и после выгрузки
+        assertEquals(fileBackedTaskManager.getPrioritized(), fileManager.getPrioritized());
     }
 }

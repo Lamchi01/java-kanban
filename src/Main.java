@@ -37,6 +37,14 @@ public class Main {
         System.out.println(fileManager.getAllEpic());
         System.out.println(fileManager.getAllSubtask());
 
+        Task task2 = new Task("С 19.00 до 22.00", "Уборка дома");
+        task2.setId(1);
+        task2.setStartTime(LocalDateTime.now().plusHours(10));
+        task2.setDuration(Duration.ofMinutes(15));
+        fileManager.updateTask(task2);
+
+        System.out.println(fileManager.getAllTask());
+
 /*        TaskManager taskManager = Managers.getDefault();
 
         taskManager.createTask(new Task("С 18.00 до 22.00", "Учёба в Practicum"));

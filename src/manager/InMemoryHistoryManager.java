@@ -9,24 +9,42 @@ import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
+    private final CustomLinkedList history = new CustomLinkedList();
+
+    @Override
+    public void add(Task task) {
+        history.linkLast(task);
+    }
+
+    @Override
+    public void remove(int id) {
+        history.removeNode(history.customMap.get(id));
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return history.getTaskList();
+    }
+
     private static class Node {
         private Node prev;
         private final Task task;
         private Node next;
 
+
         private Node(Task task) {
             this.task = task;
         }
-
         private Task getTask() {
             return task;
         }
-    }
 
+    }
     private static class CustomLinkedList {
         private final Map<Integer, Node> customMap = new HashMap<>();
         private Node head;
         private Node tail;
+
 
         private void linkLast(Task task) {
             if (customMap.containsKey(task.getId())) {
@@ -71,7 +89,6 @@ public class InMemoryHistoryManager implements HistoryManager {
                 }
             }
         }
-
         private List<Task> getTaskList() {
             List<Task> list = new ArrayList<>();
             Node element = head;
@@ -81,22 +98,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             }
             return list;
         }
-    }
 
-    private final CustomLinkedList history = new CustomLinkedList();
-
-    @Override
-    public void add(Task task) {
-        history.linkLast(task);
-    }
-
-    @Override
-    public void remove(int id) {
-        history.removeNode(history.customMap.get(id));
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        return history.getTaskList();
     }
 }

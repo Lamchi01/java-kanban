@@ -6,6 +6,7 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class InMemoryHistoryManagerTest {
 
     private final HistoryManager historyManager = new InMemoryHistoryManager();
+    static List<Task> historyList;
     static Task task;
     static Epic epic;
     static Subtask subtask;
@@ -24,6 +26,7 @@ class InMemoryHistoryManagerTest {
         task = new Task("Test addNewTask", "Test addNewTask description");
         epic = new Epic("Test addNewTask", "Test addNewTask description");
         subtask = new Subtask("Test addNewTask", "Test addNewTask description", 2);
+        historyList = new ArrayList<>();
 
         task.setId(1);
         epic.setId(2);

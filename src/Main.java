@@ -4,6 +4,8 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
 
@@ -12,17 +14,36 @@ public class Main {
         FileBackedTaskManager fileManager = FileBackedTaskManager.loadFromFile(file);
 
         Task task1 = new Task("С 18.00 до 22.00", "Учёба в Practicum");
+        task1.setStartTime(LocalDateTime.now());
+        task1.setDuration(Duration.ofMinutes(15));
         fileManager.createTask(task1);
 
         Epic epic1 = new Epic("Уборка", "Убраться в квартире");
+        epic1.setStartTime(LocalDateTime.now().plusHours(2));
+        epic1.setDuration(Duration.ofMinutes(15));
         fileManager.createEpic(epic1);
 
         Subtask subtask1 = new Subtask("Помыть пол", "Уборка", 2);
+        subtask1.setStartTime(LocalDateTime.now().plusHours(4));
+        subtask1.setDuration(Duration.ofMinutes(15));
         fileManager.createSubtask(subtask1);
+
+        Subtask subtask2 = new Subtask("Помыть пол", "Уборка", 2);
+        subtask2.setStartTime(LocalDateTime.now().plusHours(6));
+        subtask2.setDuration(Duration.ofMinutes(15));
+        fileManager.createSubtask(subtask2);
 
         System.out.println(fileManager.getAllTask());
         System.out.println(fileManager.getAllEpic());
         System.out.println(fileManager.getAllSubtask());
+
+        Task task2 = new Task("С 19.00 до 22.00", "Уборка дома");
+        task2.setId(1);
+        task2.setStartTime(LocalDateTime.now().plusHours(10));
+        task2.setDuration(Duration.ofMinutes(15));
+        fileManager.updateTask(task2);
+
+        System.out.println(fileManager.getAllTask());
 
 /*        TaskManager taskManager = Managers.getDefault();
 

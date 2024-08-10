@@ -1,39 +1,38 @@
 package manager;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import status.Status;
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FileBackedTaskManagerTest {
+class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
 
     File file;
-    Task task;
-    Epic epic;
-    Subtask subtask;
 
-    @BeforeEach
-    void beforeEach() throws IOException {
+    FileBackedTaskManagerTest() throws IOException {
         file = File.createTempFile("test", ".csv");
-
-        task = new Task("test", "testName", Status.IN_PROGRESS);
-        epic = new Epic("test", "testName", Status.IN_PROGRESS);
-        subtask = new Subtask("test", "testName", Status.IN_PROGRESS, 2);
+        taskManager = new FileBackedTaskManager(file);
     }
 
     @Test
     void loadFromFile() {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
 
+        task.setStartTime(LocalDateTime.of(2024, 8, 10, 15, 0));
+        task.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.createTask(task);
+
+        epic.setStartTime(LocalDateTime.of(2024, 8, 10, 16, 0));
+        epic.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.createEpic(epic);
+
+        subtask.setStartTime(LocalDateTime.of(2024, 8, 10, 17, 0));
+        subtask.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.createSubtask(subtask); // Инициализируем менеджер и добавляем задачи в тестовый файл
 
         assertEquals(1, fileBackedTaskManager.tasks.size()); // проверяем, добавились ли задачи в списки
@@ -47,5 +46,8 @@ class FileBackedTaskManagerTest {
         assertEquals(fileBackedTaskManager.getAllTask(), fileManager.getAllTask());
         assertEquals(fileBackedTaskManager.getAllEpic(), fileManager.getAllEpic());
         assertEquals(fileBackedTaskManager.getAllSubtask(), fileManager.getAllSubtask());
+
+        // сравниваем результаты двух объектов классов, до выгрузки и после выгрузки
+        assertEquals(fileBackedTaskManager.getPrioritized(), fileManager.getPrioritized());
     }
 }

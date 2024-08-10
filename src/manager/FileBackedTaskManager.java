@@ -17,7 +17,7 @@ import java.nio.file.Files;
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private final File file;
-    private static final String HEADER = "id,type,name,status,description,epic\n";
+    private static final String HEADER = "id,type,name,status,description,start,end,duration,epic\n";
 
     public FileBackedTaskManager(File file) {
         this.file = file;
@@ -43,6 +43,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (fileManager.id < task.getId()) {
                     fileManager.id = task.getId();
                 }
+                fileManager.addPrioritized(task);
             }
         } catch (IOException e) {
             throw new ManagerSaveException("Не удалось получить данные из файла");

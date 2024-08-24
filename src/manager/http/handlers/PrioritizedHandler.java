@@ -8,7 +8,6 @@ import manager.TaskManager;
 import java.io.IOException;
 
 public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
-
     public PrioritizedHandler(TaskManager taskManager, Gson gson) {
         super(taskManager, gson);
     }
@@ -22,10 +21,10 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
             try {
                 sendText(exchange, gson.toJson(taskManager.getPrioritized()));
             } catch (Exception e) {
-                writeResponse(exchange, 500, null);
+                writeResponse(exchange, 500, "");
             }
         } else {
-            writeResponse(exchange, 400, null);
+            writeResponse(exchange, 400, "");
         }
     }
 }

@@ -10,9 +10,6 @@ import tasks.Task;
 import java.io.IOException;
 
 public class TaskHandlers extends BaseHttpHandler implements HttpHandler {
-
-    private Task task;
-
     public TaskHandlers(TaskManager taskManager, Gson gson) {
         super(taskManager, gson);
     }
@@ -54,7 +51,7 @@ public class TaskHandlers extends BaseHttpHandler implements HttpHandler {
         } catch (ManagerSaveException e) {
             sendHasInteractions(exchange);
         } catch (Exception e) {
-            writeResponse(exchange, 500, null);
+            writeResponse(exchange, 500, "");
         }
     }
 }

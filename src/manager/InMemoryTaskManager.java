@@ -265,7 +265,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateSubtask(Subtask newSubtask) {
         validatePrioritized(newSubtask);
         addPrioritized(newSubtask);
-        if ((newSubtask == null) || (!subtasks.containsKey(newSubtask.getId()))) {
+        if (!subtasks.containsKey(newSubtask.getId())) {
             return;
         }
         Epic epic = epics.get(newSubtask.getEpicId());

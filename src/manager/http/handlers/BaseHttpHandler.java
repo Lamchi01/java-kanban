@@ -3,6 +3,9 @@ package manager.http.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import manager.TaskManager;
+import tasks.Task;
+import tasks.Epic;
+import tasks.Subtask;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,9 +16,10 @@ import java.nio.charset.StandardCharsets;
 public class BaseHttpHandler {
     protected TaskManager taskManager;
     protected Gson gson;
-
+    protected Task task;
+    protected Epic epic;
+    protected Subtask subtask;
     protected enum Endpoint {GET, GET_BY_ID, GET_SUBS_BY_EPIC_ID, POST, POST_BY_ID, DELETE_BY_ID, UNKNOWN}
-
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     BaseHttpHandler(TaskManager taskManager, Gson gson) {
@@ -23,7 +27,7 @@ public class BaseHttpHandler {
         this.gson = gson;
     }
 
-    protected Endpoint getEndpoint(HttpExchange exchange) throws IOException {
+    protected Endpoint getEndpoint(HttpExchange exchange) {
         String[] path = exchange.getRequestURI().getPath().split("/");
         String requestMethod = exchange.getRequestMethod();
 
@@ -87,14 +91,14 @@ public class BaseHttpHandler {
         try (InputStream is = exchange.getRequestBody()) {
             return new String(is.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            writeResponse(exchange, 500, null);
+            writeResponse(exchange, 500, "");
             throw e;
         }
     }
 
     private boolean isNum(String number) {
         try {
-            int id = Integer.parseInt(number);
+            Integer.parseInt(number);
             return true;
         } catch (NumberFormatException e) {
             return false;

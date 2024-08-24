@@ -10,9 +10,6 @@ import tasks.Subtask;
 import java.io.IOException;
 
 public class SubtaskHandlers extends BaseHttpHandler implements HttpHandler {
-
-    Subtask subtask;
-
     public SubtaskHandlers(TaskManager taskManager, Gson gson) {
         super(taskManager, gson);
     }
@@ -54,7 +51,7 @@ public class SubtaskHandlers extends BaseHttpHandler implements HttpHandler {
         } catch (ManagerSaveException e) {
             sendHasInteractions(exchange);
         } catch (Exception e) {
-            writeResponse(exchange, 500, null);
+            writeResponse(exchange, 500, "");
         }
     }
 }

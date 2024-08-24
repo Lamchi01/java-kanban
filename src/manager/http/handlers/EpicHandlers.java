@@ -10,9 +10,6 @@ import tasks.Epic;
 import java.io.IOException;
 
 public class EpicHandlers extends BaseHttpHandler implements HttpHandler {
-
-    private Epic epic;
-
     public EpicHandlers(TaskManager taskManager, Gson gson) {
         super(taskManager, gson);
     }
@@ -51,7 +48,7 @@ public class EpicHandlers extends BaseHttpHandler implements HttpHandler {
         } catch (ManagerSaveException e) {
             sendHasInteractions(exchange);
         } catch (Exception e) {
-            writeResponse(exchange, 500, null);
+            writeResponse(exchange, 500, "");
         }
     }
 }

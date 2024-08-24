@@ -19,7 +19,11 @@ public class BaseHttpHandler {
     protected Task task;
     protected Epic epic;
     protected Subtask subtask;
-    protected enum Endpoint {GET, GET_BY_ID, GET_SUBS_BY_EPIC_ID, POST, POST_BY_ID, DELETE_BY_ID, UNKNOWN}
+
+    protected enum Endpoint {
+        GET, GET_BY_ID, GET_SUBS_BY_EPIC_ID, POST, POST_BY_ID, DELETE_BY_ID, UNKNOWN
+    }
+
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     BaseHttpHandler(TaskManager taskManager, Gson gson) {

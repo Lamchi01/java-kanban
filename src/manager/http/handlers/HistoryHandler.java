@@ -1,0 +1,31 @@
+package manager.http.handlers;
+
+import com.google.gson.Gson;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import manager.TaskManager;
+
+import java.io.IOException;
+
+public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
+
+    public HistoryHandler(TaskManager taskManager, Gson gson) {
+        super(taskManager, gson);
+    }
+
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        String requestMethod = exchange.getRequestMethod();
+        String[] split = exchange.getRequestURI().getPath().split("/");
+
+        if (requestMethod.equals("GET") && split[1].equals("history")) {
+            try {
+                sendText(exchange, gson.toJson(taskManager.getHistory()));
+            } catch (Exception e) {
+                writeResponse(exchange, 500, null);
+            }
+        } else {
+            writeResponse(exchange, 400, null);
+        }
+    }
+}

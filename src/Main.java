@@ -1,49 +1,54 @@
-import manager.FileBackedTaskManager;
+import manager.Managers;
+import manager.TaskManager;
+import manager.http.HttpTaskServer;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Main {
-
     public static void main(String[] args) {
-        File file = new File("File.csv");
-        FileBackedTaskManager fileManager = FileBackedTaskManager.loadFromFile(file);
-
-        Task task1 = new Task("С 18.00 до 22.00", "Учёба в Practicum");
-        task1.setStartTime(LocalDateTime.now());
-        task1.setDuration(Duration.ofMinutes(15));
-        fileManager.createTask(task1);
+        TaskManager taskManager = Managers.getDefault();
+        Task task = new Task("С 18.00 до 22.00", "Учёба в Practicum");
+        task.setStartTime(LocalDateTime.now());
+        task.setDuration(Duration.ofMinutes(15));
+        taskManager.createTask(task);
 
         Epic epic1 = new Epic("Уборка", "Убраться в квартире");
         epic1.setStartTime(LocalDateTime.now().plusHours(2));
         epic1.setDuration(Duration.ofMinutes(15));
-        fileManager.createEpic(epic1);
+        taskManager.createEpic(epic1);
 
         Subtask subtask1 = new Subtask("Помыть пол", "Уборка", 2);
         subtask1.setStartTime(LocalDateTime.now().plusHours(4));
         subtask1.setDuration(Duration.ofMinutes(15));
-        fileManager.createSubtask(subtask1);
+        taskManager.createSubtask(subtask1);
 
         Subtask subtask2 = new Subtask("Помыть пол", "Уборка", 2);
         subtask2.setStartTime(LocalDateTime.now().plusHours(6));
         subtask2.setDuration(Duration.ofMinutes(15));
-        fileManager.createSubtask(subtask2);
+        taskManager.createSubtask(subtask2);
 
-        System.out.println(fileManager.getAllTask());
-        System.out.println(fileManager.getAllEpic());
-        System.out.println(fileManager.getAllSubtask());
+        System.out.println(taskManager.findTaskById(1));
 
-        Task task2 = new Task("С 19.00 до 22.00", "Уборка дома");
-        task2.setId(1);
-        task2.setStartTime(LocalDateTime.now().plusHours(10));
-        task2.setDuration(Duration.ofMinutes(15));
-        fileManager.updateTask(task2);
+        HttpTaskServer server = new HttpTaskServer(taskManager);
+        server.start();
+        server.stop();
+    }
 
-        System.out.println(fileManager.getAllTask());
+//        System.out.println(fileManager.getAllTask());
+//        System.out.println(fileManager.getAllEpic());
+//        System.out.println(fileManager.getAllSubtask());
+//
+//        Task task2 = new Task("С 19.00 до 22.00", "Уборка дома");
+//        task2.setId(1);
+//        task2.setStartTime(LocalDateTime.now().plusHours(10));
+//        task2.setDuration(Duration.ofMinutes(15));
+//        fileManager.updateTask(task2);
+//
+//        System.out.println(fileManager.getAllTask());
 
 /*        TaskManager taskManager = Managers.getDefault();
 
@@ -150,5 +155,5 @@ public class Main {
         for (Task history : taskManager.getHistory()) {
             System.out.println(history);
         } */
-    }
+
 }

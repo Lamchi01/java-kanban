@@ -142,7 +142,7 @@ class HttpTaskTest {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(201, response.statusCode());
+        assertEquals(200, response.statusCode());
         assertEquals(newTask1, manager.findTaskById(1), "Задача не совпадает.");
     }
 
@@ -181,7 +181,7 @@ class HttpTaskTest {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(201, response.statusCode());
+        assertEquals(204, response.statusCode());
         assertEquals(0, manager.getAllTask().size());
     }
 

@@ -143,7 +143,7 @@ class HttpSubtaskTest {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(201, response.statusCode());
+        assertEquals(200, response.statusCode());
         assertEquals(newSubtask1, manager.findSubtaskById(2), "Задача не совпадает.");
     }
 
@@ -182,7 +182,7 @@ class HttpSubtaskTest {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(201, response.statusCode());
+        assertEquals(204, response.statusCode());
         assertEquals(0, manager.getAllSubtask().size());
     }
 

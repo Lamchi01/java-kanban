@@ -2,14 +2,13 @@ package manager.http.handlers;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import exception.ManagerSaveException;
 import manager.TaskManager;
 import tasks.Epic;
 
 import java.io.IOException;
 
-public class EpicHandlers extends BaseHttpHandler implements HttpHandler {
+public class EpicHandlers extends BaseHttpHandler {
     public EpicHandlers(TaskManager taskManager, Gson gson) {
         super(taskManager, gson);
     }
@@ -34,10 +33,15 @@ public class EpicHandlers extends BaseHttpHandler implements HttpHandler {
                     taskManager.createEpic(epic);
                     writeResponse(exchange, 201, "Задача добавлена");
                     break;
+                case POST_BY_ID:
+                    epic = gson.fromJson(getTaskFromRequestBody(exchange), Epic.class);
+                    taskManager.updateEpic(epic);
+                    sendText(exchange, "Задача обновлена");
+                    break;
                 case DELETE_BY_ID:
                     epic = taskManager.findEpicById(Integer.parseInt(split[2]));
                     taskManager.removeEpicById(epic.getId());
-                    writeResponse(exchange, 201, "Задача удалена");
+                    writeResponse(exchange, 204, "Задача удалена");
                     break;
                 case UNKNOWN:
                     sendNotFound(exchange);

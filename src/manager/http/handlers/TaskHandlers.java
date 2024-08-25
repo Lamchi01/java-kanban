@@ -2,14 +2,13 @@ package manager.http.handlers;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import exception.ManagerSaveException;
 import manager.TaskManager;
 import tasks.Task;
 
 import java.io.IOException;
 
-public class TaskHandlers extends BaseHttpHandler implements HttpHandler {
+public class TaskHandlers extends BaseHttpHandler {
     public TaskHandlers(TaskManager taskManager, Gson gson) {
         super(taskManager, gson);
     }
@@ -35,12 +34,12 @@ public class TaskHandlers extends BaseHttpHandler implements HttpHandler {
                 case POST_BY_ID:
                     task = gson.fromJson(getTaskFromRequestBody(exchange), Task.class);
                     taskManager.updateTask(task);
-                    writeResponse(exchange, 201, "Задача обновлена");
+                    sendText(exchange, "Задача обновлена");
                     break;
                 case DELETE_BY_ID:
                     task = taskManager.findTaskById(Integer.parseInt(split[2]));
                     taskManager.removeTaskById(task.getId());
-                    writeResponse(exchange, 201, "Задача удалена");
+                    writeResponse(exchange, 204, "Задача удалена");
                     break;
                 case UNKNOWN:
                     sendNotFound(exchange);

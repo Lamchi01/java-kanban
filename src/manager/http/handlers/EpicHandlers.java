@@ -36,12 +36,12 @@ public class EpicHandlers extends BaseHttpHandler {
                 case POST_BY_ID:
                     epic = gson.fromJson(getTaskFromRequestBody(exchange), Epic.class);
                     taskManager.updateEpic(epic);
-                    sendText(exchange, "Задача обновлена");
+                    sendText(exchange, "");
                     break;
                 case DELETE_BY_ID:
                     epic = taskManager.findEpicById(Integer.parseInt(split[2]));
                     taskManager.removeEpicById(epic.getId());
-                    writeResponse(exchange, 204, "Задача удалена");
+                    writeResponse(exchange, 204, "");
                     break;
                 case UNKNOWN:
                     sendNotFound(exchange);

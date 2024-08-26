@@ -34,12 +34,12 @@ public class SubtaskHandlers extends BaseHttpHandler {
                 case POST_BY_ID:
                     subtask = gson.fromJson(getTaskFromRequestBody(exchange), Subtask.class);
                     taskManager.updateSubtask(subtask);
-                    sendText(exchange, "Задача обновлена");
+                    sendText(exchange, "");
                     break;
                 case DELETE_BY_ID:
                     subtask = taskManager.findSubtaskById(Integer.parseInt(split[2]));
                     taskManager.removeSubtaskById(subtask.getId());
-                    writeResponse(exchange, 204, "Задача удалена");
+                    writeResponse(exchange, 204, "");
                     break;
                 case UNKNOWN:
                     sendNotFound(exchange);

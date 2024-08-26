@@ -34,12 +34,12 @@ public class TaskHandlers extends BaseHttpHandler {
                 case POST_BY_ID:
                     task = gson.fromJson(getTaskFromRequestBody(exchange), Task.class);
                     taskManager.updateTask(task);
-                    sendText(exchange, "Задача обновлена");
+                    sendText(exchange, "");
                     break;
                 case DELETE_BY_ID:
                     task = taskManager.findTaskById(Integer.parseInt(split[2]));
                     taskManager.removeTaskById(task.getId());
-                    writeResponse(exchange, 204, "Задача удалена");
+                    writeResponse(exchange, 204, "");
                     break;
                 case UNKNOWN:
                     sendNotFound(exchange);

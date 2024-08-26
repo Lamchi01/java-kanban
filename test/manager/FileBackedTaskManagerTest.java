@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
@@ -27,8 +26,6 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
         task.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.createTask(task);
 
-        epic.setStartTime(LocalDateTime.of(2024, 8, 10, 16, 0));
-        epic.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.createEpic(epic);
 
         subtask.setStartTime(LocalDateTime.of(2024, 8, 10, 17, 0));

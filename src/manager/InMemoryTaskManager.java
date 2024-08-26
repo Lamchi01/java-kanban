@@ -53,9 +53,9 @@ public class InMemoryTaskManager implements TaskManager {
     public int createTask(Task task) {
         int newTaskId = generateId();
         task.setId(newTaskId);
-        tasks.put(newTaskId, task);
         validatePrioritized(task);
         addPrioritized(task);
+        tasks.put(newTaskId, task);
         return task.getId();
     }
 
@@ -71,9 +71,9 @@ public class InMemoryTaskManager implements TaskManager {
     public int createSubtask(Subtask subtask) {
         int newSubtaskId = generateId();
         subtask.setId(newSubtaskId);
-        Epic epic = epics.get(subtask.getEpicId());
         validatePrioritized(subtask);
         addPrioritized(subtask);
+        Epic epic = epics.get(subtask.getEpicId());
         if (epic != null) {
             subtasks.put(newSubtaskId, subtask);
             epic.addSubtaskId(newSubtaskId);
@@ -187,10 +187,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) {
+        validatePrioritized(task);
+        addPrioritized(task);
         if (tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
-            validatePrioritized(task);
-            addPrioritized(task);
         }
     }
 
@@ -263,7 +263,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateSubtask(Subtask newSubtask) {
-        if ((newSubtask == null) || (!subtasks.containsKey(newSubtask.getId()))) {
+        validatePrioritized(newSubtask);
+        addPrioritized(newSubtask);
+        if (!subtasks.containsKey(newSubtask.getId())) {
             return;
         }
         Epic epic = epics.get(newSubtask.getEpicId());
@@ -273,8 +275,6 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.replace(newSubtask.getId(), newSubtask);
         updateEpicStatus(epic);
         updateEpicTime(epic);
-        validatePrioritized(newSubtask);
-        addPrioritized(newSubtask);
     }
 
     @Override

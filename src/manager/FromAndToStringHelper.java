@@ -6,15 +6,11 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 class FromAndToStringHelper {
-    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy,HH:mm");
-    static DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    static DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
+    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     protected static Task fromString(String value) {
         String[] arrays = value.split(",");
@@ -23,16 +19,14 @@ class FromAndToStringHelper {
         String name = arrays[2];
         Status status = Status.valueOf(arrays[3]);
         String description = arrays[4];
-        LocalDateTime startTime = LocalDateTime.of(LocalDate.parse(arrays[5], formatterDate),
-                LocalTime.parse(arrays[6], formatterTime));
-        Duration duration = Duration.ofMinutes(Long.parseLong(arrays[9]));
+        LocalDateTime startTime = LocalDateTime.parse(arrays[5], formatter);
+        Duration duration = Duration.ofMinutes(Long.parseLong(arrays[7]));
 
         if (typeTask.equals("EPIC")) {
-            LocalDateTime epicEndTime = LocalDateTime.of(LocalDate.parse(arrays[7], formatterDate),
-                    LocalTime.parse(arrays[8], formatterTime));
+            LocalDateTime epicEndTime = LocalDateTime.parse(arrays[6], formatter);
             return new Epic(id, name, status, description, startTime, epicEndTime, duration);
         } else if (typeTask.equals("SUBTASK")) {
-            int epicId = Integer.parseInt(arrays[10]);
+            int epicId = Integer.parseInt(arrays[8]);
             return new Subtask(id, name, status, description, startTime, duration, epicId);
         } else {
             return new Task(id, name, status, description, startTime, duration);
